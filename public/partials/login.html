@@ -1,0 +1,36 @@
+<section class="container-fluid" id="login">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3">
+      <div ng-contoller="AuthCtrl">
+        <form class="form-horizontal" ng-submit="logIn()">
+        <fieldset>
+          <legend>Jaaga</legend>
+          <div class="form-group">
+            <label for="inputName" class="col-md-2 control-label">User Name</label>
+            <div class="col-md-10">
+              <input type="text" class="form-control" id="inputName" placeholder="User Name" ng-model="user.username">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword" class="col-md-2 control-label">Password</label>
+            <div class="col-md-10">
+              <input type="password" class="form-control" id="inputPassword" placeholder="Password"  ng-model="user.password">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-10 col-md-offset-2">
+              <a ui-sref="register"><button type="button" class="btn btn-default">Register</button></a>
+              <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div ng-show="error" class="alert alert-danger row">
+              <span class="error">{{ error}}</span>
+            </div>
+          </div>
+        </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

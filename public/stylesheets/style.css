@@ -1,0 +1,36 @@
+form {
+  background-color: #fff;
+  padding: 30px;
+  position: absolute;
+  transform: translateY(50%);
+  width: 100%;
+}
+
+#login {
+  background: url(../images/map.jpg) no-repeat;
+  background-size: cover;
+  height: 100vh;
+  position: relative;
+}
+
+.navbar .navbar-nav > li > a, .navbar .navbar-nav > li > a:hover  {
+  color: #000;
+}
+
+#place-input {
+  position: absolute;
+  top: 200px;
+  width: 100%;
+}
+
+.error {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+.brand {
+  font-weight:bold; 
+  font-size: 22px;
+}
