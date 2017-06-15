@@ -1,0 +1,36 @@
+<section id="places">
+  <nav class="navbar navbar-default" ng-controller="NavCtrl">
+  <ul class="nav navbar-nav">
+    <li><a><p class="brand">Jaaga</p></a></li>
+    <li><a><small>Logged in as <span class="text-capitalize">{{ currentUser() }}</span></small></a></li>
+  </ul>
+  <ul class="nav navbar-nav pull-right">
+    <li ng-show="isLoggedIn()"><a ng-click="showHome()">Home</a></li>
+    <li ng-show="isLoggedIn()"><a ng-click="showPlaces()">Places</a></li>
+    <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
+  </ul>
+</nav>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="well well-lg">
+          <p class="lead text-center">Places searched by <span class="text-capitalize">{{currentUser}}</span></p>
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <p><strong>Name</strong></p>
+              <li ng-repeat="place in places">{{place.name}}</li>
+            </div>
+            <div class="col-md-6 text-center">
+              <p class="text-center"><strong>Location</strong></p>
+              <li ng-repeat="place in places">{{place.location}}</li>
+            </div>
+            <div class="col-md-3 text-center">
+              <p><strong>Lat &amp; Lng</strong></p>
+              <li ng-repeat="place in places">{{place.lat | limitTo : 6 }} , {{place.lng | limitTo : 6}}</li>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

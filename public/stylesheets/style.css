@@ -1,12 +1,16 @@
-form {
+.form-horizontal {
   background-color: #fff;
   padding: 30px;
-  position: absolute;
-  transform: translateY(50%);
+  
   width: 100%;
 }
 
-#login {
+.mid-form {
+  position: absolute;
+  transform: translateY(50%);
+}
+
+#login, #app, #places {
   background: url(../images/map.jpg) no-repeat;
   background-size: cover;
   height: 100vh;
@@ -18,8 +22,8 @@ form {
 }
 
 #place-input {
-  position: absolute;
-  top: 200px;
+  position: relative;
+  transform: translateY(50%);
   width: 100%;
 }
 
@@ -34,3 +38,22 @@ form {
   font-weight:bold; 
   font-size: 22px;
 }
+
+.margin-top-0 {
+  margin-top: 0;
+}
+
+.well {
+  margin-top: 150px;
+  background-color: #fff;
+}
+
+li {
+  list-style-type: none;
+  height: auto;
+  margin: 15px;
+}
+
+
+
+

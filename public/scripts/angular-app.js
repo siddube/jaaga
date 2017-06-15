@@ -1,4 +1,4 @@
-var app = angular.module('jaagaApp', ['ui.router', 'ngMap']);
+var app = angular.module('jaagaApp', ['ui.router', 'ngMap','gm']);
 
 app.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlRouterProvider) {
   $stateProvider.state('login', {
@@ -16,12 +16,67 @@ app.config(['$stateProvider','$urlRouterProvider',function($stateProvider, $urlR
     templateUrl: 'assets/partials/app.html',
     controller: 'MainCtrl'
   });
+  $stateProvider.state('places', {
+    url: '/places',
+    templateUrl: 'assets/partials/places.html',
+    controller: 'PlaceCtrl'
+  });
   $urlRouterProvider.otherwise('login');
 }]);
 
-app.controller('MainCtrl', ['$scope', function ($scope) {
+app.controller('MainCtrl', ['$scope', '$http', 'auth', function ($scope, $http, auth) {
   'use strict';
   $.material.init();
+  $scope.currentUser = auth.currentUser;
+  $scope.lat = undefined;
+  $scope.lng = undefined;
+  
+  $scope.$on('gmPlacesAutocomplete::placeChanged', function(){
+    var location = $scope.autocomplete.getPlace();
+    $scope.address = location.formatted_address;
+    $scope.name = location.name;
+    $scope.lat = location.geometry.location.lat();
+    $scope.lng = location.geometry.location.lng();
+    $scope.$apply();
+  });
+  
+  $scope.submitPlace = function () {
+    var reqObj = {
+      userid: auth.currentId(),
+      name: $scope.name,
+      location: $scope.address,
+      lat: $scope.lat,
+      lng: $scope.lng
+    };
+    
+    $http({
+			method: 'POST',
+			url: 'http://localhost:8080/savelocation',
+			data: {
+				requestObj: reqObj
+			},
+			headers: {
+			"Content-Type": "application/json;charset=utf-8"
+			}
+		}).then(function successCallback(response) {
+			console.log(response.data);
+		});
+    
+  };
+}]);
+
+app.controller('PlaceCtrl', ['$scope','$http', 'auth', function ($scope, $http, auth) {
+  'use strict';
+  $.material.init();
+  $scope.currentUser = auth.currentUser();
+  $scope.userId = auth.currentId();
+  var data = { userid: $scope.userId};
+  var config = {params: data};
+  $http.get('http://localhost:8080/fetchplaces/:' + $scope.userId).then(function successCallback(response) {
+    $scope.places = response.data;
+    
+  });
+    
 }]);
 
 app.controller('NavCtrl', ['$scope', '$state', 'auth',function($scope, $state, auth){
@@ -30,6 +85,12 @@ app.controller('NavCtrl', ['$scope', '$state', 'auth',function($scope, $state, a
   $scope.logOut = function() {
     auth.logOut;
     $state.go('login');
+  }
+  $scope.showPlaces = function () {
+    $state.go('places');
+  }
+  $scope.showHome = function () {
+    $state.go('app');
   }
 }]);
 
@@ -103,6 +164,14 @@ app.factory('auth', ['$http', '$window', function ($http, $window) {
       var payload = JSON.parse($window.atob(token.split('.')[1]));
 
       return payload.username;
+    }
+  };
+  
+  auth.currentId = function(){
+    if(auth.isLoggedIn()){
+      var token = auth.getToken();
+      var payload = JSON.parse($window.atob(token.split('.')[1]));
+      return payload._id;
     }
   };
   

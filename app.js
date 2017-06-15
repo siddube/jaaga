@@ -58,4 +58,33 @@ app.post('/login', function(req, res, next){
   
 });
 
+app.post('/savelocation', function (req, res) {
+	'use strict';
+  var userid = req.body.requestObj.userid;
+  var name = req.body.requestObj.name;
+  var location = req.body.requestObj.location;
+  var lat = req.body.requestObj.lat;
+  var lng = req.body.requestObj.lng;
+	User.findById(userid, function (err, user) {
+    user.places.push({
+      name: name,
+      location: location,
+      lat: lat,
+      lng: lng
+    });
+    user.save(function(err){
+      
+    });
+  });
+});
+
+app.get('/fetchplaces/:id', function (req, res) {
+  var id = req.params.id.substr(1);
+  User.findById(id, function (err, user){
+    res.send(user.places);
+  });
+});
+                                           
+                                          
+
 app.listen(port);

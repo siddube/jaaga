@@ -1,10 +1,20 @@
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
+
+//Places Schema
+
+var PlacesSchema = new mongoose.Schema({
+  name: String,
+  location: String,
+  lat: Number,
+  lng: Number
+});
 var UserSchema = new mongoose.Schema({
   username: {type: String, lowercase: true, unique: true},
   hash: String,
-  salt: String
+  salt: String,
+  places: [PlacesSchema]
 });
 
 UserSchema.methods.setPassword = function(password){
